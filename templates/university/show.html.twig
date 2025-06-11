@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de {{ university.name }}{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">{{ university.name }} - {{ university.city }}</h1>
+
+    {# Affichage du logo de l'IUT #}
+    {% if university.logoPath %}
+        <div class="text-center mb-4">
+            <img 
+                src="{{ asset('uploads/logos/' ~ university.logoPath) }}" 
+                alt="Logo {{ university.name }}" 
+                class="img-fluid rounded"
+                style="max-height: 150px;"
+            >
+        </div>
+    {% endif %}
+
+    {# Liste des formations BUT #}
+    <h2 class="mb-3">Formations proposées :</h2>
+    <div class="row">
+        {% for universityDegree in degrees %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    {# Logo du BUT (si existant) #}
+                    {% if universityDegree.degree.logoPath %}
+                        <img 
+                            src="{{ asset('uploads/logos/' ~ universityDegree.degree.logoPath) }}" 
+                            class="card-img-top p-3" 
+                            alt="Logo {{ universityDegree.degree.name }}"
+                            style="height: 120px; object-fit: contain;"
+                        >
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <strong>{{ universityDegree.degree.code }}</strong> - {{ universityDegree.degree.name }}
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <p class="text-muted">Aucune formation disponible pour cet IUT.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    {# Bouton de retour #}
+    <a href="{{ path('app_university') }}" class="btn btn-primary mt-3">
+        ← Retour à la liste
+    </a>
+</div>
+{% endblock %}
